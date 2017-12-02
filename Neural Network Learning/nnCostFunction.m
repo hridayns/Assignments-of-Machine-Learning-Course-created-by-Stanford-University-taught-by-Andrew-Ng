@@ -52,8 +52,6 @@ for(i = 1:m),
   Y(i,:) = tmpY;
 endfor
 
-%Y(1,:)'
-
 a1 = [ones(m,1) X];
 a2 = sigmoid(a1 * Theta1');
 a2 = [ones(m,1) a2];
@@ -62,16 +60,10 @@ h = a3;
 
 J = (-1/m) * sum(sum( (Y .* log(h) + (1 - Y) .* log(1 - h)), 2 ));
 
-%for k = 1:num_labels,
-  %yk = (y == k);
-  %h = h(:,k);
-  %J = J + sum(yk .* log(h) + (1-yk) .* log(1-h));
-%endfor
-
-%J = (-1/m) * J;
-
+regu = (lambda/(2*m)) * (sum(sum((Theta1(:,2:end).^2),2)) + sum(sum((Theta2(:,2:end).^2),2)));
         
-    
+J = J + regu;
+        
 %
 % Part 2: Implement the backpropagation algorithm to compute the gradients
 %         Theta1_grad and Theta2_grad. You should return the partial derivatives of
