@@ -52,7 +52,9 @@ for(i = 1:m),
   Y(i,:) = tmpY;
 endfor
 
-a1 = [ones(m,1) X];
+X = [ones(m,1) X];
+
+a1 = X;
 a2 = sigmoid(a1 * Theta1');
 a2 = [ones(m,1) a2];
 a3 = sigmoid(a2 * Theta2');
@@ -79,6 +81,69 @@ J = J + regu;
 %         Hint: We recommend implementing backpropagation using a for-loop
 %               over the training examples if you are implementing it for the 
 %               first time.
+
+
+
+
+%size(a1)
+%size(a2)
+%size(a3)
+%size(Theta1)
+%size(Theta2)
+
+
+a1 = X;
+z2 = a1 * Theta1';
+a2 = sigmoid(z2);
+a2 = [ones(m,1) a2];
+z3 = a2 * Theta2';
+a3 = sigmoid(z3);
+
+delta3 = a3 - Y;
+
+delta2 = (delta3 * Theta2)(:,2:end) .* sigmoidGradient(z2);
+
+grad2 = 0;
+grad1 = 0;
+
+grad2 = grad2 + delta3' * a2;
+grad1 = grad1 + delta2' * a1;
+
+Theta1_grad = (grad1/m) + lambda*[zeros(hidden_layer_size , 1) Theta1(:,2:end)] / m;
+Theta2_grad = (grad2/m) + lambda*[zeros(num_labels, 1) Theta2(:,2:end)] / m;;
+
+
+
+
+
+
+
+
+
+
+
+
+
+%delta3 = 0;
+%delta2 = 0;
+
+%for t=1:m
+  % forward pass
+%  a1 = X(t,:);
+%  z2 = Theta1 * a1';
+%  a2 = [1; sigmoid(z2)];
+%  z3 = Theta2*a2;
+%  a3 = sigmoid(z3);
+ 
+  % backprop
+%  delta3 = a3-Y(t,:)';
+%  delta2 = (Theta2'*delta3).*[1; sigmoidGradient(z2)];
+%  delta2 = delta2(2:end);
+% 
+% Theta1_grad = Theta1_grad + delta2*a1;
+%  Theta2_grad = Theta2_grad + delta3*a2';
+%end
+
 %
 % Part 3: Implement regularization with the cost function and gradients.
 %
